@@ -13,17 +13,26 @@ namespace SharpTicTac
     public partial class Form1 : Form
     {
         bool x = true;
-        int[,] field = new int[3, 3];
+        int[][] field = {new int[] {0, 0, 0}, new int[] { 0, 0, 0,}, new int[] { 0, 0, 0}};
         public Form1()
         {
             InitializeComponent();
-            for (int x = 0; x < 3; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    field[x, y] = 0;
-                }
-            }
+
+        }
+
+        bool checkWin(int sym)
+        {
+            int[] r1 = field[0];
+            int[] r2 = field[1];
+            int[] r3 = field[2];
+            return (r1[0] == sym & r1[1] == sym & r1[2] == sym) ||
+            (r2[0] == sym & r2[1] == sym & r2[2] == sym) ||
+            (r3[0] == sym & r3[1] == sym & r3[2] == sym) ||
+            (r1[0] == sym & r2[0] == sym & r3[0] == sym) ||
+            (r1[1] == sym & r2[1] == sym & r3[1] == sym) ||
+            (r1[2] == sym & r2[2] == sym & r3[2] == sym) ||
+            (r1[0] == sym & r2[1] == sym & r3[2] == sym) ||
+            (r1[2] == sym & r2[1] == sym & r3[0] == sym);
         }
 
         private void button_Click(object sender, EventArgs e)
@@ -43,11 +52,19 @@ namespace SharpTicTac
             else if (button == button8) { row = 2; col = 1; }
             else if (button == button9) { row = 2; col = 2; }
 
-            if (field[row, col] == 0)
+            if (field[row][col] == 0)
             {
-                x = !x;
-                field[row, col] = x ? 1 : 2;
+                int sym = x ? 1 : 2;
+                field[row][col] = sym;
                 button.Text = pChar;
+                if (checkWin(sym)) 
+                { 
+                    string winner = x ? "X" : "O";
+                    MessageBox.Show($"Выиграл {winner}"); 
+                    this.Close(); 
+                };
+
+                x = !x;
             }
             else
             {
