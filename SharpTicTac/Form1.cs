@@ -12,6 +12,7 @@ namespace SharpTicTac
 {
     public partial class Form1 : Form
     {
+        int clicks = 0;
         bool x = true;
         int[][] field = {new int[] {0, 0, 0}, new int[] { 0, 0, 0,}, new int[] { 0, 0, 0}};
         public Form1()
@@ -54,6 +55,7 @@ namespace SharpTicTac
 
             if (field[row][col] == 0)
             {
+                clicks++;
                 int sym = x ? 1 : 2;
                 field[row][col] = sym;
                 button.Text = pChar;
@@ -62,7 +64,12 @@ namespace SharpTicTac
                     string winner = x ? "X" : "O";
                     MessageBox.Show($"Выиграл {winner}"); 
                     this.Close(); 
-                };
+                }
+                else if (clicks >= 9)
+                {
+                    MessageBox.Show($"Ничья!");
+                    this.Close();
+                }
 
                 x = !x;
             }
